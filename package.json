@@ -1,0 +1,62 @@
+{
+  "name": "godot-res-parser",
+  "version": "1.0.0",
+  "description": "A JavaScript library for encoding and decoding Godot .res resource files",
+  "main": "godot_res.js",
+  "module": "godot_res.js",
+  "types": "index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./godot_res.js",
+      "types": "./types/index.d.ts"
+    },
+    "./encoder": {
+      "import": "./godot_res_encode.js"
+    },
+    "./decoder": {
+      "import": "./godot_res_decode.js"
+    },
+    "./common": {
+      "import": "./godot_res_common.js"
+    }
+  },
+  "files": [
+    "godot_res.js",
+    "godot_res_common.js",
+    "godot_res_encode.js",
+    "godot_res_decode.js",
+    "index.d.ts",
+    "README.md",
+    "LICENSE",
+    "examples/"
+  ],
+  "scripts": {
+    "test": "node test/test.js",
+    "build": "echo \"No build step required for ES modules\"",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "godot",
+    "resource",
+    "parser",
+    "encoder",
+    "decoder",
+    "res",
+    "game-engine",
+    "binary-format"
+  ],
+  "author": "axh-xecoy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axh-xecoy/godot-res-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/axh-xecoy/godot-res-parser/issues"
+  },
+  "homepage": "https://github.com/axh-xecoy/godot-res-parser#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
