@@ -19,7 +19,7 @@ Add Git dependency in `package.json`:
 ```json
 {
   "dependencies": {
-    "godot-res-parser": "git+https://github.com/axh-xecoy/godot-res-parser.git"
+    "godot-res-parser": "github:axh-xecoy/godot-res-parser"
   }
 }
 ```
@@ -27,17 +27,7 @@ Add Git dependency in `package.json`:
 Alternatively, install via command:
 
 ```bash
-npm install git+https://github.com/axh-xecoy/godot-res-parser.git
-```
-
-Pin to a tag or commit for reproducibility:
-
-```json
-{
-  "dependencies": {
-    "godot-res-parser": "git+https://github.com/axh-xecoy/godot-res-parser.git#v1.0.0"
-  }
-}
+npm install github:axh-xecoy/godot-res-parser
 ```
 
 ## Quick Start
