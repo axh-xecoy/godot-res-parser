@@ -2,26 +2,54 @@
 
 A JavaScript library for encoding and decoding Godot `.res` resource files. This library allows you to convert between Godot's binary resource format and JSON for easy manipulation and analysis.
 
+ 
+
 ## Features
 
-- 🔄 **Bidirectional conversion**: Convert `.res` files to JSON and back
-- 📦 **Complete resource support**: Handles headers, string tables, external resources, and resource data
-- 🚀 **ES Module support**: Modern JavaScript module system
-- 🛠️ **TypeScript ready**: Includes type definitions
-- 🎯 **Zero dependencies**: Pure JavaScript implementation
+- 🔄 Bidirectional conversion: Convert `.res` files to JSON and back
+- 📦 Resource coverage: Headers, string tables, external/internal resources, resource data
+- 🚀 ES Module support: Modern JavaScript module system
+- 🛠️ TypeScript types: `index.d.ts`
+- 🎯 Zero dependencies: Pure JavaScript implementation
 
 ## Installation
 
+Add Git dependency in `package.json`:
+
+```json
+{
+  "dependencies": {
+    "godot-res-parser": "git+https://github.com/axh-xecoy/godot-res-parser.git"
+  }
+}
+```
+
+Alternatively, install via command:
+
 ```bash
-npm install godot-res-parser
+npm install git+https://github.com/axh-xecoy/godot-res-parser.git
+```
+
+Pin to a tag or commit for reproducibility:
+
+```json
+{
+  "dependencies": {
+    "godot-res-parser": "git+https://github.com/axh-xecoy/godot-res-parser.git#v1.0.0"
+  }
+}
 ```
 
 ## Quick Start
 
-### Basic Usage
-
 ```javascript
-import { resDataToJsonString, jsonStringToResData } from 'godot-res-parser';
+import {
+  resDataToJsonString,
+  jsonStringToResData,
+  setDebugMode,
+  CompleteResourceParser,
+  CompleteResourceEncoder
+} from 'godot-res-parser';
 import fs from 'fs';
 
 // Decode .res file to JSON
@@ -34,28 +62,6 @@ const newResData = jsonStringToResData(jsonString);
 fs.writeFileSync('output.res', newResData);
 ```
 
-### Advanced Usage
-
-```javascript
-import { 
-  CompleteResourceParser, 
-  CompleteResourceEncoder,
-  setDebugMode 
-} from 'godot-res-parser';
-
-// Enable debug mode for detailed logging
-setDebugMode(true);
-
-// Use parser directly for more control
-const parser = new CompleteResourceParser();
-parser.setBuffer(Buffer.from(resData));
-const result = parser.parseComplete();
-
-// Use encoder directly
-const encoder = new CompleteResourceEncoder();
-const buffer = encoder.encode(data);
-```
-
 ## API Reference
 
 ### Main Functions
@@ -64,23 +70,23 @@ const buffer = encoder.encode(data);
 
 Converts Godot `.res` binary data to JSON string.
 
-- **Parameters:**
+- Parameters:
   - `resData`: Uint8Array containing the binary .res file data
-- **Returns:** JSON string representation of the resource
+- Returns: JSON string representation of the resource
 
 #### `jsonStringToResData(jsonString: string): Uint8Array`
 
 Converts JSON string back to Godot `.res` binary format.
 
-- **Parameters:**
+- Parameters:
   - `jsonString`: JSON string representation of the resource
-- **Returns:** Uint8Array containing the binary .res data
+- Returns: Uint8Array containing the binary .res data
 
 #### `setDebugMode(enabled: boolean, logger?: function)`
 
 Enables or disables debug logging.
 
-- **Parameters:**
+- Parameters:
   - `enabled`: Whether to enable debug mode
   - `logger`: Optional custom logger function (defaults to console.log)
 
@@ -128,76 +134,32 @@ The JSON representation follows this structure:
     "hasScriptClass": false,
     "realTIsDouble": false
   },
-  "stringTable": ["resource_local_to_scene", "resource_name", ...],
-  "externalResources": [...],
-  "internalResources": [...],
+  "stringTable": ["resource_local_to_scene", "resource_name", "..."],
+  "externalResources": ["..."],
+  "internalResources": ["..."],
   "resourceData": {
     "type": "Resource",
     "properties": {
-      "property_name": "property_value",
-      ...
+      "property_name": "property_value"
     }
   }
 }
 ```
 
-## Command Line Tools
-
-You can also use the library via command line:
-
-### Encoding (JSON to .res)
-
-```bash
-node encode.js input.json output.res
-```
-
-### Decoding (.res to JSON)
-
-```bash
-node decode.js input.res output.json
-```
-
 ## Examples
 
-### Working with Save Files
+Run local examples:
 
-```javascript
-import { resDataToJsonString, jsonStringToResData } from 'godot-res-parser';
-import fs from 'fs';
-
-// Load and parse a Godot save file
-const saveData = fs.readFileSync('user://save.res');
-const saveJson = JSON.parse(resDataToJsonString(saveData));
-
-// Modify player data
-saveJson.resourceData.properties.playerLevel = 99;
-saveJson.resourceData.properties.playerGold = 999999;
-
-// Save back to .res format
-const modifiedSave = jsonStringToResData(JSON.stringify(saveJson));
-fs.writeFileSync('modified_save.res', modifiedSave);
+```bash
+node examples/basic-usage.js
+node examples/file-conversion.js
+node examples/simple-demo.js
 ```
 
-### Resource Analysis
+## Notes & Compatibility
 
-```javascript
-import { resDataToJsonString } from 'godot-res-parser';
-
-function analyzeResource(resPath) {
-  const data = fs.readFileSync(resPath);
-  const json = JSON.parse(resDataToJsonString(data));
-  
-  console.log('Resource Type:', json.header.resourceType);
-  console.log('Godot Version:', `${json.header.verMajor}.${json.header.verMinor}`);
-  console.log('Properties:', Object.keys(json.resourceData.properties));
-  console.log('External Resources:', json.externalResources.length);
-}
-```
-
-## Supported Godot Versions
-
-- Godot 4.x (primary support)
-- Godot 3.x (limited support)
+- The library targets the Godot 4 resource format. Broader compatibility is a work-in-progress.
+- If you hit any format differences, please open an issue with sample files.
 
 ## Contributing
 
@@ -206,11 +168,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 MIT License - see LICENSE file for details.
-
-## Changelog
-
-### 1.0.0
-- Initial release
-- Support for basic .res file parsing and encoding
-- ES Module support
-- Command line tools
